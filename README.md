@@ -10,8 +10,15 @@ along with other variables considered while calculating it, by looking at table 
 I provide my analysis from the data regarding how the country's standard of education affects people's quality of life. In the third section, 
 you can create your own graph by selecting the graph type and other necessary attributes.
 
+  
+
 
 ### Project Documents
+* [Project Proposal](https://docs.google.com/document/d/1wn12IJUeAvIHc4JqrAbHlYGXNEEokNY0FmROQMaQSRM/edit)
+* [Development Plan](https://github.com/ParimaSA/Quality-of-Life/wiki)
+* Design Pattern and UML Diagrams
+
+
 
 ### Data Source
 * Quality of Life
