@@ -10,9 +10,13 @@ along with other variables considered while calculating it, by looking at table 
 I provide my analysis from the data regarding how the country's standard of education affects people's quality of life. In the third section, 
 you can create your own graph by selecting the graph type and other necessary attributes.
 
+
+### Project Documents
+
 ### Data Source
 * Quality of Life
-	* [https://www.numbeo.com/quality-of-life/rankings_by_country.jsp]
+	* [Quality of Life Index by Country 2024](https://www.numbeo.com/quality-of-life/rankings_by_country.jsp)
 * Data of each country
-	* [https://www.kaggle.com/datasets/iamsouravbanerjee/world-population-dataset]
-	* Education: [https://worldpopulationreview.com/country-rankings/education-index-by-country]   
+	* [World Population Dataset
+](https://www.kaggle.com/datasets/iamsouravbanerjee/world-population-dataset)
+	* [Education Index](https://worldpopulationreview.com/country-rankings/education-index-by-country) 
