@@ -303,7 +303,7 @@ class Data_Country(DemoFrame):
 class Data_Descriptive(DemoFrame):
     def __init__(self, main_window, frame):
         super().__init__(main_window, frame)
-        img = PhotoImage(file='background/data_table.png')
+        img = PhotoImage(file='background/data_descriptive.png')
         self.set_background(img)
         self.init_components()
 
@@ -327,7 +327,7 @@ class Data_Descriptive(DemoFrame):
 class Storytelling_Frame(DemoFrame):
     def __init__(self, main_window, frame):
         super().__init__(main_window, frame)
-        img = PhotoImage(file='background/data_country.png')
+        img = PhotoImage(file='background/storytelling.png')
         self.set_background(img)
         self.init_components()
 
