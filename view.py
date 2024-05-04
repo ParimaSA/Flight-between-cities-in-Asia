@@ -1,10 +1,7 @@
+"""Module for View Class"""
 from tkinter import ttk
 import tkinter as tk
 from matplotlib.figure import Figure
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
