@@ -39,7 +39,7 @@ class App_Controller(tk.Tk):
 class DemoPage(tk.Frame):
     """The demo for every page"""
     head_button = {'font': ('Ariel', 25, 'bold'), 'fg': '#a6a6a6', 'bg': '#f8f5ef', 'bd': 1, 'relief': tk.FLAT}
-    head_pack = {'side': tk.RIGHT, 'padx': 15, 'pady':10}
+    head_pack = {'side': tk.RIGHT, 'padx': 15, 'pady': 10}
 
     def __init__(self, main_window, frame):
         """Initialize the page"""
@@ -95,13 +95,13 @@ class Home_Page(DemoPage):
         self.init_head_components()
         self.head_frame.pack(side=tk.TOP, expand=False, fill=tk.X, anchor=tk.N)
 
-        bg_frame = self.background_frame()
+        bg_frame = self.create_background_frame()
         self.button_frame = self.create_button_frame()
 
         bg_frame.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
         self.button_frame.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
 
-    def background_frame(self):
+    def create_background_frame(self):
         """Create the Frame contain the logo image of the App"""
         frame = tk.Frame(self, bg='#f8f5ef')
         self.bg = ImageTk.PhotoImage(self.img)
@@ -137,7 +137,7 @@ class Home_Page(DemoPage):
         story_button = self.create_button(frame, 'Data Storytelling', self.button_handler, self.button_opt)
         graph_button = self.create_button(frame, 'Create Graph', self.button_handler, self.button_opt)
 
-        pack_opt = {'side': tk.TOP, 'fill': tk.X, 'padx':30, 'pady':30}
+        pack_opt = {'side': tk.TOP, 'fill': tk.X, 'padx': 30, 'pady': 30}
         data_button.pack(**pack_opt)
         story_button.pack(**pack_opt)
         graph_button.pack(**pack_opt)
@@ -194,8 +194,8 @@ class Data_Table_Page(DemoPage):
 
         table = tk.Label(frame, text='table', borderwidth=0, font=("Ariel", 12), bg='#f8f5ef')
         form_switch = ctk.CTkSwitch(frame, text="country", command=self.switch_handler, variable=self.switch_var,
-                                  onvalue="on", offvalue="off", switch_width=100, switch_height=25, fg_color="#76b9ff",
-                                  progress_color="#76b9ff", font=("Ariel", 16),)
+                                    onvalue="on", offvalue="off", switch_width=100, switch_height=25,
+                                    fg_color="#76b9ff", progress_color="#76b9ff", font=("Ariel", 16),)
         form_switch.pack(side=tk.RIGHT, pady=10, padx=20)
         table.pack(side=tk.RIGHT, pady=10)
 
@@ -292,8 +292,8 @@ class Data_Country_Page(DemoPage):
 
         table = tk.Label(frame, text='table', borderwidth=0, font=("Ariel", 12), bg='#f8f5ef')
         form_switch = ctk.CTkSwitch(frame, text="country", command=self.switch_handler, variable=self.switch_var,
-                                  onvalue="on", offvalue="off", switch_width=100, switch_height=25, fg_color="#338be6",
-                                  progress_color="#338be6", font=("Ariel", 16),)
+                                    onvalue="on", offvalue="off", switch_width=100, switch_height=25,
+                                    fg_color="#338be6", progress_color="#338be6", font=("Ariel", 16),)
         form_switch.pack(side=tk.RIGHT, pady=10, padx=20)
         table.pack(side=tk.RIGHT, pady=10)
         return frame
@@ -427,7 +427,7 @@ class Storytelling_Page(DemoPage):
         """Initialize head components for Storytelling page, navigation button to data and graph page"""
         super().init_head_components()
         qol_button = self.create_button(self.head_frame, 'Quality of Life Data', self.button_handler, self.head_button)
-        graph_button = self.create_button(self.head_frame,'Create Graph', self.button_handler, self.head_button)
+        graph_button = self.create_button(self.head_frame, 'Create Graph', self.button_handler, self.head_button)
         graph_button.pack(**self.head_pack)
         qol_button.pack(**self.head_pack)
 

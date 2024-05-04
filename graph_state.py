@@ -265,7 +265,7 @@ class Bar_Graph(Graph_state):
         data = self.model.filter_range_data(min_y, max_y, data)
 
         self.graph_view.clear_graph()
-        self.graph_view.bar(data, x, y, min_y, max_y)
+        self.graph_view.bar(data, x, y)
 
 
 class Box_Plot(Graph_state):

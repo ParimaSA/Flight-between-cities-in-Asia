@@ -110,13 +110,11 @@ class Graph_View(FigureCanvasTkAgg):
         self.draw()
         self.get_tk_widget().pack(expand=True, fill=tk.BOTH, padx=20, pady=20)
 
-    def bar(self, data, x_attribute, y_attribute, min_y, max_y):
+    def bar(self, data, x_attribute, y_attribute):
         """Plot Bar graph in figure
         :param data: data use to plot the graph
         :param x_attribute: the attribute on the x-axis
         :param y_attribute: the attribute on the y-axis
-        :param min_y: the minimum range of the y-axis
-        :param max_y: the maximum range of the y-axis
         """
         plot = self.fig.add_subplot(1, 1, 1)
         plot.bar(data.index, data, color='#76b9ff')
