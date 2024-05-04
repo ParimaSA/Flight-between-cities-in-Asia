@@ -4,7 +4,8 @@ from tkinter import ttk
 
 
 class Graph_state:
-    """Class for creating the input section for plotting the graph"""
+    """Frame for the input section, getting the components to create the graph"""
+
     font_option = {'font': ('Ariel', 16)}
     attribute_opt = {'side': tk.TOP, 'anchor': tk.W, 'fill': tk.X, 'pady': 20}
     button_opt = {'side': tk.LEFT, 'fill': tk.X, 'expand': True, 'padx': 5}
@@ -22,6 +23,7 @@ class Graph_state:
         pass
 
     def combo_label_frame(self, text, variable, values, current=0):
+        """Create and return frame contain the name label and combobox"""
         frame = tk.Frame(self.attribute_frame, bg='#f8f5ef')
         label = tk.Label(frame, text=text, **self.font_option, bg='#f8f5ef')
         label.pack(side=tk.LEFT, fill=tk.X, anchor=tk.NW, padx=10)
@@ -34,6 +36,7 @@ class Graph_state:
         return frame
 
     def range_frame(self, text, min_var, max_var, state='normal', entry_list=None):
+        """Create and return frame contain min and max label and entry"""
         frame = tk.Frame(self.attribute_frame, bg='#f8f5ef')
         range_label = tk.Label(frame, text=text, **self.font_option, bg='#f8f5ef')
         range_label.pack(side=tk.LEFT, padx=10)
@@ -61,6 +64,7 @@ class Graph_state:
         return frame
 
     def button_frame(self):
+        """Create and return frame contain set and reset range button"""
         button_frame = tk.Frame(self.attribute_frame, bg='#f8f5ef')
         set_button = tk.Button(button_frame, text='Set Range', **self.font_option, bg='#fac0d6')
         set_button.bind('<Button>', self.update_graph)
@@ -73,6 +77,7 @@ class Graph_state:
         return button_frame
 
     def check_entry_input(self, entry):
+        """Check and translate the entry input"""
         try:
             entry_input = float(entry.get())
         except ValueError:
@@ -81,17 +86,23 @@ class Graph_state:
         return entry_input
 
     def reset_range(self, *args):
+        """Clear the range entry and plot the graph with original range"""
         pass
 
     def update_graph(self, *args):
+        """Update the graph with new type or new component"""
         pass
 
     def show_graph(self):
+        """display the graph on the screen"""
         pass
 
 
 class Histogram(Graph_state):
+    """Frame contain the input section for Histogram graph components"""
+
     def __init__(self, root, model, graph_view):
+        """Initialize the attribute in the frame"""
         super().__init__(root, model, graph_view)
         self.attribute = tk.StringVar()
         self.min = tk.StringVar()
@@ -100,6 +111,7 @@ class Histogram(Graph_state):
         self.init_graph_components()
 
     def init_graph_components(self):
+        """Initialize the components in the frame"""
         attribute = self.combo_label_frame('Attribute', self.attribute, self.model.columns()[2:])
         attribute.pack(**self.attribute_opt)
 
@@ -112,15 +124,18 @@ class Histogram(Graph_state):
         self.show_graph()
 
     def reset_range(self, event, *args):
+        """Clear range entry and replot the graph"""
         self.min.set('')
         self.max.set('')
         self.update_graph(event)
 
     def change_entry_state(self, state):
+        """Change the entry state"""
         for widget in self.entry_list:
             widget['state'] = state
 
     def update_graph(self, event, *args):
+        """Change the graph type"""
         event.widget.selection_clear()
 
         if isinstance(event.widget, ttk.Combobox):
@@ -133,6 +148,7 @@ class Histogram(Graph_state):
         self.show_graph()
 
     def show_graph(self):
+        """Clear current graph and plot new histogram"""
         attribute = self.attribute.get()
         min_range = self.check_entry_input(self.min)
         max_range = self.check_entry_input(self.max)
@@ -142,7 +158,10 @@ class Histogram(Graph_state):
 
 
 class Scatter_Plot(Graph_state):
+    """Frame contain the input section for Scatter graph components"""
+
     def __init__(self, root, model, graph_view):
+        """Initialize the frame and some variable"""
         super().__init__(root, model, graph_view)
         self.x = tk.StringVar()
         self.min_x = tk.StringVar()
@@ -153,6 +172,7 @@ class Scatter_Plot(Graph_state):
         self.init_graph_components()
 
     def init_graph_components(self):
+        """Initialize the components in the frame"""
         x_attribute = self.combo_label_frame('x-attribute', self.x, self.model.index_columns())
         x_range = self.range_frame('Range', self.min_x, self.max_x)
         y_attribute = self.combo_label_frame('y-attribute', self.y, self.model.index_columns(), 1)
@@ -169,6 +189,7 @@ class Scatter_Plot(Graph_state):
         self.attribute_frame.pack(side=tk.LEFT, anchor=tk.N, padx=20, pady=100, fill=tk.X)
 
     def reset_range(self, event, *args):
+        """Clear all the range entry and replot the graph with the original range"""
         self.min_x.set('')
         self.max_x.set('')
         self.min_y.set('')
@@ -176,10 +197,12 @@ class Scatter_Plot(Graph_state):
         self.update_graph(event)
 
     def update_graph(self, event, *args):
+        """Clear the input section and plot the graph"""
         event.widget.selection_clear()
         self.show_graph()
 
     def show_graph(self):
+        """Plot scatter with the input attribute"""
         x = self.x.get()
         min_x = self.check_entry_input(self.min_x)
         max_x = self.check_entry_input(self.max_x)
@@ -193,7 +216,10 @@ class Scatter_Plot(Graph_state):
 
 
 class Bar_Graph(Graph_state):
+    """Frame contain the input section for Bar graph components"""
+
     def __init__(self, root, model, graph_view):
+        """Initialize the frame and some variable"""
         super().__init__(root, model, graph_view)
         self.x = tk.StringVar()
         self.y = tk.StringVar()
@@ -202,6 +228,7 @@ class Bar_Graph(Graph_state):
         self.init_graph_components()
 
     def init_graph_components(self):
+        """Initialize components in the frame"""
         x_attribute = self.combo_label_frame('x-attribute', self.x, ['Country', 'Continent'], 1)
         y_attribute = self.combo_label_frame('y-attribute', self.y, self.model.numerical_columns())
         y_range = self.range_frame('Range', self.min_y, self.max_y)
@@ -216,15 +243,18 @@ class Bar_Graph(Graph_state):
         self.attribute_frame.pack(side=tk.LEFT, anchor=tk.N, padx=20, pady=100, fill=tk.X)
 
     def reset_range(self, event, *args):
+        """Clear the entry range and plot graph with original range"""
         self.min_y.set('')
         self.max_y.set('')
         self.update_graph(event)
 
     def update_graph(self, event, *args):
+        """Clear the selection and display the graph"""
         event.widget.selection_clear()
         self.show_graph()
 
     def show_graph(self):
+        """Clear current graph and plot new scatter plot"""
         x = self.x.get()
 
         y = self.y.get()
@@ -239,7 +269,10 @@ class Bar_Graph(Graph_state):
 
 
 class Box_Plot(Graph_state):
+    """Frame contain the input section for Box plot graph components"""
+
     def __init__(self, root, model, graph_view):
+        """Initialize the frame and some variable"""
         super().__init__(root, model, graph_view)
         self.attribute = tk.StringVar()
         self.entry_list = []
@@ -247,16 +280,19 @@ class Box_Plot(Graph_state):
         self.init_graph_components()
 
     def init_graph_components(self):
+        """Initialize the components in the frame"""
         attribute = self.combo_label_frame('Attribute', self.attribute, self.model.numerical_columns())
         attribute.pack(**self.attribute_opt)
 
         self.show_graph()
 
     def update_graph(self, event, *args):
+        """Clear the input selection and plot new graph"""
         event.widget.selection_clear()
         self.show_graph()
 
     def show_graph(self):
+        """Plot Box plot with input attribute"""
         attribute = self.attribute.get()
         self.graph_view.clear_graph()
         self.graph_view.box_plot(self.model.data, attribute)

@@ -25,7 +25,7 @@ class App_Controller(tk.Tk):
         if self.current_frame:
             self.current_frame.destroy()
         self.current_frame = frame(self, self.frame)
-        self.current_frame.pack(expand=True, fil='both')
+        self.current_frame.pack(expand=True, fill=tk.BOTH)
 
     def run(self):
         """Run the App"""
@@ -38,7 +38,7 @@ class App_Controller(tk.Tk):
 
 class DemoPage(tk.Frame):
     """The demo for every page"""
-    head_button = {'font': ('Century', 25, 'bold'), 'fg': '#a6a6a6', 'bg': '#f8f5ef', 'bd': 0}
+    head_button = {'font': ('Ariel', 25, 'bold'), 'fg': '#a6a6a6', 'bg': '#f8f5ef', 'bd': 1, 'relief': tk.FLAT}
     head_pack = {'side': tk.RIGHT, 'padx': 15, 'pady':10}
 
     def __init__(self, main_window, frame):
@@ -175,7 +175,7 @@ class Data_Table_Page(DemoPage):
         self.head_frame.pack(side=tk.TOP, expand=False, fill=tk.X, anchor=tk.N)
 
         title_frame = self.create_title_frame()
-        title_frame.pack(side=tk.TOP, expand=False, fill=tk.X, anchor=tk.N)
+        title_frame.pack(side=tk.TOP, expand=False, fill=tk.BOTH, anchor=tk.N)
 
         tree_frame = self.init_treeview()
         self.tree.reset_data(self.main.model.data)
@@ -312,7 +312,7 @@ class Data_Country_Page(DemoPage):
         self.create_country_info(country_data_frame, country, country_data)
 
         columns = self.main.model.index_columns()[1:]
-        colors = ['#d53e4f', '#f46d43', '#fdae61', '#c6e792', '#e6f598', '#ffffbf', '#abdda4', '#66c2a5', '#3288bd']
+        colors = ['#ff5b6e', '#f46d43', '#fdae61', '#c6e792', '#e6f598', '#ffffbf', '#abdda4', '#66c2a5', '#3288bd']
         self.create_all_index_frame(country_data_frame, country_data, columns, colors)
         country_data_frame.columnconfigure(0, weight=1)
         country_data_frame.columnconfigure(1, weight=1)
@@ -331,7 +331,8 @@ class Data_Country_Page(DemoPage):
         area = tk.Label(middle_frame, text=f'Area: {list(country_data["Area"])[0]:,} kilometer per square',
                         **middle_opt)
         pop = tk.Label(middle_frame, text=f'Population: {list(country_data["Population"])[0]:,}', **middle_opt)
-        dens = tk.Label(middle_frame, text=f'Density: {list(country_data["Density"])[0]}', **middle_opt)
+        dens = tk.Label(middle_frame, text=f'Population Density: {list(country_data["Density"])[0]} per square '
+                                           f'kilometer', **middle_opt)
         area.pack(**middle_pack)
         pop.pack(**middle_pack)
         dens.pack(**middle_pack)
@@ -363,7 +364,7 @@ class Data_Country_Page(DemoPage):
         """Create and return frame contain quality of life index and rank of the country"""
         frame = tk.Frame(country_frame, height=30, bg='#f8f5ef')
         qol = tk.Label(frame, text=f'Quality of Life Index {list(data["Quality of Life Index"])[0]}',
-                       font=('Ariel', 30), borderwidth=1, relief='solid', bg='#f8f5ef')
+                       font=('Ariel', 30), borderwidth=1, relief='solid', bg='#fac0d6')
         rank = tk.Label(frame, text=f'Rank {list(data["Rank"])[0]}', font=('Ariel', 40), borderwidth=1, relief='solid',
                         bg='#fac0d6')
 

@@ -24,7 +24,7 @@ class Data_Treeview(ttk.Treeview):
 
     def set_heading(self):
         """Set the heading of  treeview"""
-        width = [50, 170, 130, 160, 90, 120, 130, 190, 190, 100, 100, 180]
+        width = [50, 160, 130, 160, 90, 120, 130, 190, 180, 100, 100, 180]
         for n in range(len(self.columns)):
             head = self.columns[n]
             self.heading(head, text=head)
