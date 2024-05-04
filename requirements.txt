@@ -1,5 +1,7 @@
-# Requirement for the Quality of Life App
+# Requirement for Quality of Life App
 
+customtkinter==5.2.2
 matplotlib==3.7.5
 pandas==2.0.3
 pillow==10.3.0
+
