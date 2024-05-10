@@ -15,17 +15,19 @@ class App_Controller(tk.Tk):
         self.title('Quality of Life')
         self.model = model
         self.view = view
-        self.frame = tk.Frame(self)
+        self.frame = tk.Frame(self)  # root frame for packing frame page in it
         self.frame.pack(expand=True, fill=tk.BOTH)
         self.current_frame = None
         self.set_frame(Home_Page)
 
     def set_frame(self, frame):
-        """Change page to the select frame"""
-        if self.current_frame:
+        """Change page to the select frame
+        :param frame: class of the page to set in the window
+        """
+        if self.current_frame:  # destroy the last page
             self.current_frame.destroy()
-        self.current_frame = frame(self, self.frame)
-        self.current_frame.pack(expand=True, fill=tk.BOTH)
+        self.current_frame = frame(self, self.frame)  # create new frame page from the given page class
+        self.current_frame.pack(expand=True, fill=tk.BOTH)  # pack it in the window
 
     def run(self):
         """Run the App"""
@@ -66,7 +68,7 @@ class DemoPage(tk.Frame):
         """Set the page to Home page"""
         self.main.set_frame(Home_Page)
 
-    def button_handler(self, event, *args):
+    def button_handler(self, event):
         """Set page from button"""
         frame_dict = {'Quality of Life Data': Data_Table_Page, 'Data Storytelling': Storytelling_Page,
                       'Create Graph': Graph_Page, 'Storytelling': Storytelling_Page}
@@ -158,7 +160,7 @@ class Data_Table_Page(DemoPage):
         super().__init__(main_window, frame)
         self.img = Image.open('background//qol_title.png')
         self.sort = tk.StringVar()  # variable for sorting the data
-        self.switch_var = ctk.StringVar(value="off")  # data form switch variable
+        self.form_var = ctk.StringVar(value="off")  # data form switch variable
         self.init_components()
 
     def init_head_components(self):
@@ -193,17 +195,13 @@ class Data_Table_Page(DemoPage):
         sort_frame.pack(side=tk.LEFT, pady=20, fill=tk.BOTH, expand=True, anchor=tk.NW)
 
         table = tk.Label(frame, text='table', borderwidth=0, font=("Ariel", 12), bg='#f8f5ef')
-        form_switch = ctk.CTkSwitch(frame, text="country", command=self.switch_handler, variable=self.switch_var,
+        form_switch = ctk.CTkSwitch(frame, text="country", command=self.switch_handler, variable=self.form_var,
                                     onvalue="on", offvalue="off", switch_width=100, switch_height=25,
                                     fg_color="#76b9ff", progress_color="#76b9ff", font=("Ariel", 16),)
         form_switch.pack(side=tk.RIGHT, pady=10, padx=20)
         table.pack(side=tk.RIGHT, pady=10)
 
         return frame
-
-    def switch_handler(self, *args):
-        """Change to Data Country Page"""
-        self.main.set_frame(Data_Country_Page)
 
     def create_sort_frame(self, title_frame):
         """Create and Return the sort frame, contain the label and combobox for sorting attribute"""
@@ -234,7 +232,7 @@ class Data_Table_Page(DemoPage):
         columns.remove('Population')
         columns.remove('Area')
         columns.remove('Density')
-        self.tree = self.main.view.data(frame, columns)
+        self.tree = self.main.view.data_tree(frame, columns)
         self.tree.pack(expand=True, fill=tk.BOTH, padx=80, pady=40)
         return frame
 
@@ -250,6 +248,10 @@ class Data_Table_Page(DemoPage):
             info = '(Lower is Better)'
         self.info_label.config(text=info)
 
+    def switch_handler(self, *args):
+        """Change to Data Country Page"""
+        self.main.set_frame(Data_Country_Page)
+
 
 class Data_Country_Page(DemoPage):
     """Page showing the quality of life data in country form"""
@@ -258,7 +260,8 @@ class Data_Country_Page(DemoPage):
         super().__init__(main_window, frame)
         self.img = Image.open('background//qol_title.png')
         self.country = tk.StringVar()  # country attribute to filter the data
-        self.switch_var = ctk.StringVar(value="on")  # data form switch variable
+        self.form_var = ctk.StringVar(value="off")  # data form switch variable
+        self.index_var = ctk.StringVar(value="off")  # index form switch variable
         self.init_components()
 
     def init_head_components(self):
@@ -278,6 +281,8 @@ class Data_Country_Page(DemoPage):
         title_frame.pack(side=tk.TOP, expand=False, fill=tk.X, anchor=tk.N)
         self.data_frame = self.create_data_frame()
         self.data_frame.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
+        self.index_var.set("index")
+        self.set_data()
 
     def create_title_frame(self):
         """Create and Return the title frame contain title, part for country attribute, switch data form"""
@@ -291,58 +296,12 @@ class Data_Country_Page(DemoPage):
         country_frame.pack(side=tk.LEFT, pady=20, fill=tk.BOTH, expand=True, anchor=tk.NW)
 
         table = tk.Label(frame, text='table', borderwidth=0, font=("Ariel", 12), bg='#f8f5ef')
-        form_switch = ctk.CTkSwitch(frame, text="country", command=self.switch_handler, variable=self.switch_var,
+        form_switch = ctk.CTkSwitch(frame, text="country", command=self.switch_handler, variable=self.form_var,
                                     onvalue="on", offvalue="off", switch_width=100, switch_height=25,
                                     fg_color="#338be6", progress_color="#338be6", font=("Ariel", 16),)
         form_switch.pack(side=tk.RIGHT, pady=10, padx=20)
         table.pack(side=tk.RIGHT, pady=10)
         return frame
-
-    def switch_handler(self, *args):
-        """Change to Data Table page"""
-        self.main.set_frame(Data_Table_Page)
-
-    def create_data_frame(self, *args):
-        """Create and return frame, contain info and index of the country"""
-        self.select_country.selection_clear()
-        country = self.country.get()
-        country_data = self.main.model.filter_data({'Country': country})
-        country_data_frame = tk.Frame(self, bg='#f8f5ef')
-
-        self.create_country_info(country_data_frame, country, country_data)
-
-        columns = self.main.model.index_columns()[1:]
-        colors = ['#ff5b6e', '#f46d43', '#fdae61', '#c6e792', '#e6f598', '#ffffbf', '#abdda4', '#66c2a5', '#3288bd']
-        self.create_all_index_frame(country_data_frame, country_data, columns, colors)
-        country_data_frame.columnconfigure(0, weight=1)
-        country_data_frame.columnconfigure(1, weight=1)
-        country_data_frame.rowconfigure(0, weight=1)
-        return country_data_frame
-
-    def create_country_info(self, country_frame, country, country_data):
-        """Create frame contain info of the country in data frame"""
-        frame = tk.Frame(country_frame, bg='#f8f5ef', borderwidth=2, relief='solid')
-        title_frame = self.create_country_name_frame(frame, country, list(country_data["Continent"])[0])
-        title_frame.pack(side=tk.TOP, pady=20, padx=20, expand=True, fill=tk.BOTH)
-
-        middle_frame = tk.Frame(frame, bg='#f8f5ef')
-        middle_opt = {'font': ('Ariel', 20), 'anchor': tk.W, 'bg': '#f8f5ef'}
-        middle_pack = {'side': tk.TOP, 'padx': 5, 'pady': 10, 'anchor': tk.NW, 'fill': tk.X}
-        area = tk.Label(middle_frame, text=f'Area: {list(country_data["Area"])[0]:,} kilometer per square',
-                        **middle_opt)
-        pop = tk.Label(middle_frame, text=f'Population: {list(country_data["Population"])[0]:,}', **middle_opt)
-        dens = tk.Label(middle_frame, text=f'Population Density: {list(country_data["Density"])[0]} per square '
-                                           f'kilometer', **middle_opt)
-        area.pack(**middle_pack)
-        pop.pack(**middle_pack)
-        dens.pack(**middle_pack)
-
-        middle_frame.pack(side=tk.TOP, pady=20, padx=20,  expand=True, fill=tk.BOTH)
-
-        last_frame = self.create_rank_frame(frame, country_data)
-        last_frame.pack(side=tk.TOP, fill=tk.X)
-
-        frame.grid(row=0, column=0, sticky=tk.NSEW, padx=50, pady=50)
 
     def create_country_select(self, title_frame):
         """Create and return the frame contain part for select the country"""
@@ -360,58 +319,89 @@ class Data_Country_Page(DemoPage):
         self.select_country.pack(**pack_opt)
         return frame
 
-    def create_rank_frame(self, country_frame, data):
-        """Create and return frame contain quality of life index and rank of the country"""
-        frame = tk.Frame(country_frame, height=30, bg='#f8f5ef')
-        qol = tk.Label(frame, text=f'Quality of Life Index {list(data["Quality of Life Index"])[0]}',
-                       font=('Ariel', 30), borderwidth=1, relief='solid', bg='#fac0d6')
-        rank = tk.Label(frame, text=f'Rank {list(data["Rank"])[0]}', font=('Ariel', 40), borderwidth=1, relief='solid',
-                        bg='#fac0d6')
+    def create_data_frame(self):
+        """Create and return frame, contain info and index of the country"""
+        country_data_frame = tk.Frame(self, bg='#f8f5ef')
+        self.create_country_info(country_data_frame)
 
-        rank.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        qol.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        return frame
+        columns = self.main.model.index_columns()[1:]
+        self.index_frame = self.main.view.data_country(country_data_frame, columns)
+        self.index_frame.grid(row=0, column=1, sticky=tk.NSEW, padx=50, pady=50)
 
-    def create_all_index_frame(self, country_frame, data, column, color):
-        """Create frame contain all index in data frame"""
-        frame = tk.Frame(country_frame, bg='#f8f5ef')
-        for h in range(9):
-            label = self.index_frame(frame, column[h], list(data[column[h]])[0], color[h])
-            label.grid(row=h//3, column=h % 3, sticky=tk.NSEW, padx=3, pady=3)
+        country_data_frame.columnconfigure(0, weight=1)
+        country_data_frame.columnconfigure(1, weight=1)
+        country_data_frame.rowconfigure(0, weight=1)
+        return country_data_frame
 
-        for i in range(3):
-            frame.rowconfigure(i, weight=1)
-            frame.columnconfigure(i, weight=1)
+    def create_country_info(self, data_frame):
+        """Create frame contain info of the country in data frame"""
+        frame = tk.Frame(data_frame, bg='#f8f5ef', borderwidth=2, relief='solid')
+        title_frame = tk.Frame(frame, bg='#f8f5ef')
+        self.country_name = tk.Label(title_frame, text=' ', font=('Ariel', 40), bg='#f8f5ef')
+        self.continent = tk.Label(title_frame, text='( )', font=('Ariel', 20), bg='#f8f5ef')
+        form_switch = ctk.CTkSwitch(title_frame, text="rank", command=self.set_data, variable=self.index_var,
+                                    onvalue="rank", offvalue="index", switch_width=100, switch_height=25,
+                                    fg_color="#a6a6a6", progress_color="#f8cc69", font=("Ariel", 16))
+        form_switch.pack(side=tk.RIGHT)
+        self.country_name.pack(side=tk.LEFT)
+        self.continent.pack(side=tk.LEFT, padx=40)
+        title_frame.pack(side=tk.TOP, pady=20, padx=20, expand=True, fill=tk.BOTH)
 
-        frame.grid(row=0, column=1, sticky=tk.NSEW, padx=20, pady=50)
+        middle_frame = tk.Frame(frame, bg='#f8f5ef')
+        middle_opt = {'font': ('Ariel', 20), 'anchor': tk.W, 'bg': '#f8f5ef'}
+        middle_pack = {'side': tk.TOP, 'padx': 5, 'pady': 10, 'anchor': tk.NW, 'fill': tk.X}
+        self.area = tk.Label(middle_frame, text=f' ', **middle_opt)
+        self.pop = tk.Label(middle_frame, text=' ', **middle_opt)
+        self.dens = tk.Label(middle_frame, text=' ', **middle_opt)
+        self.area.pack(**middle_pack)
+        self.pop.pack(**middle_pack)
+        self.dens.pack(**middle_pack)
+        middle_frame.pack(side=tk.TOP, pady=20, padx=20,  expand=True, fill=tk.BOTH)
 
-    def index_frame(self, all_frame, head, info, color):
-        """Create and return index frame contain head and value for each index"""
-        size = 17
-        if len(head) > 20:
-            size = 12
-        frame = tk.Frame(all_frame, bg=color, borderwidth=2, relief='solid')
-        label_head = tk.Label(frame, text=head, font=('Ariel', size), bg=color)
-        label_info = tk.Label(frame, text=info, font=('Ariel', 35), bg=color)
-        label_head.pack(side=tk.TOP, expand=True)
-        label_info.pack(side=tk.TOP, expand=True)
-        return frame
+        last_frame = tk.Frame(frame, height=30, bg='#f8f5ef')
+        self.qol = tk.Label(frame, text=f' ', font=('Ariel', 30), borderwidth=1, relief='solid', bg='#fffe77')
+        self.rank = tk.Label(frame, text=f' ', font=('Ariel', 40), borderwidth=1, relief='solid', bg='#fffe77')
+        self.rank.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.qol.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        last_frame.pack(side=tk.TOP, fill=tk.X)
 
-    def create_country_name_frame(self, data_frame, country, continent):
-        """Create and return the frame contain name and continent of the country"""
-        frame = tk.Frame(data_frame, bg='#f8f5ef')
-        country = tk.Label(frame, text=country, font=('Ariel', 40), bg='#f8f5ef')
-        continent = tk.Label(frame, text=f'({continent})', font=('Ariel', 20), bg='#f8f5ef')
-        country.pack(side=tk.LEFT)
-        continent.pack(side=tk.LEFT, padx=40)
-        return frame
+        frame.grid(row=0, column=0, sticky=tk.NSEW, padx=50, pady=50)
 
-    def set_data(self, event, *args):
+    def switch_handler(self, *args):
+        """Change to Data Table page"""
+        self.main.set_frame(Data_Table_Page)
+
+    def set_data(self, event=None):
         """Change all data to the selected country"""
-        event.widget.selection_clear()
-        self.data_frame.destroy()
-        self.data_frame = self.create_data_frame()
-        self.data_frame.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
+        if event:
+            event.widget.selection_clear()
+        country = self.country.get()
+        country_data = self.main.model.filter_data({'Country': country})
+        # reset name and continent of the country
+        self.country_name.config(text=country)
+        self.continent.config(text=f'({list(country_data["Continent"])[0]})')
+        # reset area, population and density
+        self.area.config(text=f'Area: {list(country_data["Area"])[0]:,} kilometer per square')
+        self.pop.config(text=f'Population: {list(country_data["Population"])[0]:,}')
+        self.dens.config(text=f'Population Density: {list(country_data["Density"])[0]} per square kilometer')
+        # reset quality of life and rank
+        self.qol.config(text=f'Quality of Life Index {list(country_data["Quality of Life Index"])[0]}')
+        self.rank.config(text=f'Rank {list(country_data["Rank"])[0]}')
+        # reset index frame
+        if self.index_var.get() == "rank":
+            rank_list = self.country_rank_list(country)
+            self.index_frame.set_rank(rank_list)
+        else:
+            self.index_frame.set_index(country_data)
+
+    def country_rank_list(self, country):
+        columns = self.main.model.index_columns()[1:]
+        rank_list = []
+        for col in columns:
+            sort_data = self.main.model.sort_data(col)
+            country_data = self.main.model.filter_data({'Country': country}, sort_data)
+            rank_list.append(country_data.index[0]+1)
+        return rank_list
 
 
 class Storytelling_Page(DemoPage):

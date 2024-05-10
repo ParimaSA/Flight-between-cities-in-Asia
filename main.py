@@ -1,5 +1,5 @@
 """Module for Quality of Life App"""
-from app import App_Controller
+from app_controller import App_Controller
 from model import Model
 from view import View
 

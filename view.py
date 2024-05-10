@@ -8,7 +8,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 class View:
     """View Class for output section in Quality of Life App"""
     def __init__(self):
-        self.data = Data_Treeview
+        self.data_tree = Data_Treeview
+        self.data_country = Data_Country
         self.graph = Graph_View
 
 
@@ -57,6 +58,49 @@ class Data_Treeview(ttk.Treeview):
         style.configure('Treeview.Heading', background="#76b9ff")
         style.configure('Treeview', rowheight=30)
         style.configure("Treeview", borderwidth=1, relief="solid")
+
+
+class Data_Country(tk.Frame):
+    colors = ['#fac0d6', '#f4a9c6', '#f898bd', '#76b9ff', '#5ba8f8', '#519be8', '#fdbc6b', '#f8ac4d', '#eb9e3d']
+
+    def __init__(self, root, columns):
+        super().__init__(root, bg='#f8f5ef')
+        self.columns = columns
+        self.init_components()
+
+    def init_components(self):
+        for h in range(9):
+            label = self.create_index_frame(self.columns[h], self.colors[h])
+            label.grid(row=h//3, column=h % 3, sticky=tk.NSEW, padx=4, pady=4)
+
+        for i in range(3):
+            self.rowconfigure(i, weight=1)
+            self.columnconfigure(i, weight=1)
+
+    def create_index_frame(self, head, color):
+        """Create and return index frame contain head and value label for each index"""
+        size = 17
+        if len(head) > 20:
+            size = 12
+        frame = tk.Frame(self, bg=color, borderwidth=2, relief='solid')
+        label_head = tk.Label(frame, text=head, font=('Ariel', size), bg=color)
+        label_info = tk.Label(frame, text=' ', font=('Ariel', 35), bg=color)
+        label_head.pack(side=tk.TOP, expand=True)
+        label_info.pack(side=tk.TOP, expand=True)
+        return frame
+
+    def set_index(self, df):
+        widget = self.winfo_children()
+        for n in range(9):
+            data = list(df[self.columns[n]])[0]
+            head, info = widget[n].winfo_children()
+            info.config(text=data)
+
+    def set_rank(self, rank_list):
+        widget = self.winfo_children()
+        for n in range(9):
+            head, info = widget[n].winfo_children()
+            info.config(text=rank_list[n])
 
 
 class Graph_View(FigureCanvasTkAgg):
