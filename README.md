@@ -1,5 +1,6 @@
 # Quality of Life by country
 
+-----
  
 <br>
 
@@ -15,6 +16,11 @@ you can create your own graph by selecting the graph type and other necessary at
 
 ### The Application
 ![application_ui](screenshots/0_all_page.png)
+
+<br>
+
+### Requirements
+Requires Python 3.8 or newer. Required Python packages are listed in requirements.txt.
 
 <br>
 
@@ -40,6 +46,8 @@ Install the requirement packages using in this App
 pip install -r requirements.txt
 ```
 
+<br>
+
 ### How to run the application
 run the file main.py
 ```
@@ -57,7 +65,6 @@ python main.py
 * [Design Pattern and UML Diagrams](https://github.com/ParimaSA/Quality-of-Life/wiki/Design-Documents-and-UML-Diagrams)
 
 <br>
-
 
 ### Data Source
 
