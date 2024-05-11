@@ -59,7 +59,12 @@ class DemoPage(tk.Frame):
         pass
 
     def create_button(self, root, text: str, bind, opt):
-        """Create and Return the button with the option from the parameters"""
+        """Create and Return the button with the option from the parameters
+        :param root: root to pack the button in
+        :param text: text on the button
+        :param bind: the function to bind with the button
+        :return button: new button created with the parameter requirements
+        """
         button = tk.Button(root, text=text, **opt)
         button.bind('<Button>', bind)
         return button
@@ -204,7 +209,10 @@ class Data_Table_Page(DemoPage):
         return frame
 
     def create_sort_frame(self, title_frame):
-        """Create and Return the sort frame, contain the label and combobox for sorting attribute"""
+        """Create and Return the sort frame, contain the label and combobox for sorting attribute
+        :param title_frame: the frame with the title of the page to pack this frame in
+        :return frame: frame contain sort label and combobox to get the user input
+        """
         frame = tk.Frame(title_frame, bg='#f8f5ef')
         font_option = {'font': ('Ariel', 16)}
 
@@ -359,8 +367,8 @@ class Data_Country_Page(DemoPage):
         middle_frame.pack(side=tk.TOP, pady=20, padx=20,  expand=True, fill=tk.BOTH)
 
         last_frame = tk.Frame(frame, height=30, bg='#f8f5ef')
-        self.qol = tk.Label(frame, text=f' ', font=('Ariel', 30), borderwidth=1, relief='solid', bg='#fffe77')
-        self.rank = tk.Label(frame, text=f' ', font=('Ariel', 40), borderwidth=1, relief='solid', bg='#fffe77')
+        self.qol = tk.Label(frame, text=f' ', font=('Ariel', 30), borderwidth=1, relief='solid', bg='#ffe596')
+        self.rank = tk.Label(frame, text=f' ', font=('Ariel', 40), borderwidth=1, relief='solid', bg='#ffe596')
         self.rank.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.qol.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         last_frame.pack(side=tk.TOP, fill=tk.X)

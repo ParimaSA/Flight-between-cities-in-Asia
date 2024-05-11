@@ -1,6 +1,7 @@
 # Quality of Life by country
 
  
+<br>
 
 ### Description
 
@@ -9,6 +10,13 @@ table data, data for each country, and descriptive data. You can get information
 along with other variables considered while calculating it, by looking at table data and data by country. In the second part is data storytelling, 
 I provide my analysis from the data regarding how the country's standard of education affects people's quality of life. In the third section, 
 you can create your own graph by selecting the graph type and other necessary attributes.
+
+<br>
+
+### The Application
+![application_ui](screenshots/0_all_page.png)
+
+<br>
 
 ### Installation and Setup
 **for virtual environment**
@@ -38,6 +46,7 @@ run the file main.py
 python main.py
 ```
 
+<br>
 
 ### Project Documents
 
@@ -45,9 +54,9 @@ python main.py
 
 * [Development Plan](https://github.com/ParimaSA/Quality-of-Life/wiki/Development-Plan)
 
-* Design Pattern and UML Diagrams
+* [Design Pattern and UML Diagrams](https://github.com/ParimaSA/Quality-of-Life/wiki/Design-Documents-and-UML-Diagrams)
 
-
+<br>
 
 
 ### Data Source

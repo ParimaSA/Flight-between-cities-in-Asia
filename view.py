@@ -61,15 +61,18 @@ class Data_Treeview(ttk.Treeview):
 
 
 class Data_Country(tk.Frame):
-    colors = ['#fac0d6', '#f4a9c6', '#f898bd', '#76b9ff', '#5ba8f8', '#519be8', '#fdbc6b', '#f8ac4d', '#eb9e3d']
+    """Class represent the factors using while calculate quality of life index"""
+    colors = ['#c6e0f7', '#b6d2eb', '#b1cee8', '#c0f1c6', '#acedbc', '#a6efbd', '#efc4d4', '#f8bcd3', '#f1b0c9']
 
     def __init__(self, root, columns):
+        """Initialize the frame"""
         super().__init__(root, bg='#f8f5ef')
         self.columns = columns
         self.init_components()
 
     def init_components(self):
-        for h in range(9):
+        """Initialize the component in it"""
+        for h in range(9):  # create the frame of each factor and pack
             label = self.create_index_frame(self.columns[h], self.colors[h])
             label.grid(row=h//3, column=h % 3, sticky=tk.NSEW, padx=4, pady=4)
 
@@ -83,22 +86,28 @@ class Data_Country(tk.Frame):
         if len(head) > 20:
             size = 12
         frame = tk.Frame(self, bg=color, borderwidth=2, relief='solid')
-        label_head = tk.Label(frame, text=head, font=('Ariel', size), bg=color)
-        label_info = tk.Label(frame, text=' ', font=('Ariel', 35), bg=color)
+        label_head = tk.Label(frame, text=head, font=('Ariel', size), bg=color)  # name of the factor
+        label_info = tk.Label(frame, text=' ', font=('Ariel', 35), bg=color)  # value of the factor
         label_head.pack(side=tk.TOP, expand=True)
         label_info.pack(side=tk.TOP, expand=True)
         return frame
 
     def set_index(self, df):
+        """Change the value of each index with the new data
+        :param df: new dataframe contain the data for selected country
+        """
         widget = self.winfo_children()
-        for n in range(9):
+        for n in range(9):  # edit the text in each label
             data = list(df[self.columns[n]])[0]
             head, info = widget[n].winfo_children()
             info.config(text=data)
 
-    def set_rank(self, rank_list):
+    def set_rank(self, rank_list: list):
+        """Change the value of each index with the new data
+        :param rank_list: list contain index rank for selected country
+        """
         widget = self.winfo_children()
-        for n in range(9):
+        for n in range(9):  # edit the text in each label
             head, info = widget[n].winfo_children()
             info.config(text=rank_list[n])
 
