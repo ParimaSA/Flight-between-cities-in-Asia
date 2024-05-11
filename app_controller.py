@@ -268,7 +268,7 @@ class Data_Country_Page(DemoPage):
         super().__init__(main_window, frame)
         self.img = Image.open('background//qol_title.png')
         self.country = tk.StringVar()  # country attribute to filter the data
-        self.form_var = ctk.StringVar(value="off")  # data form switch variable
+        self.form_var = ctk.StringVar(value="on")  # data form switch variable
         self.index_var = ctk.StringVar(value="off")  # index form switch variable
         self.init_components()
 
